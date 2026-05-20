@@ -26,39 +26,35 @@ int Train::getLength() {
     if (!first) return 0;
     if (first->next == first) return 1;
 
-    countOp = 1;
+    countOp = 0;
     first->light = true;
 
-    Car* ptr = first->next;
-    int dist = 1;
+    Car* temp = first->next;
+    int count = 1;
     countOp++;
 
-    while(true) {
-        if (ptr->light) {
-            ptr->light = false;
-            countOp++;
-
-            const Car* backPtr = ptr;
-            int bSteps = dist;
+    while (true) {
+        if (temp->light) {
+            temp->light = false;
             
-            while (bSteps--) {
-                backPtr = backPtr->prev;
+            int stepsBack = count;
+            const Car* verify = temp;
+            
+            while (stepsBack > 0) {
+                verify = verify->prev;
                 countOp++;
+                stepsBack--;
             }
 
             if (!first->light) {
-                return dist;
+                return count;
             }
 
-            int fSteps = dist;
-            while (fSteps--) {
-                backPtr = backPtr->next;
-                countOp++;
-            }
+            countOp += count;
         }
         
-        ptr = ptr->next;
-        dist++;
+        temp = temp->next;
+        count++;
         countOp++;
     }
 }
