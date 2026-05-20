@@ -38,7 +38,7 @@ int Train::getLength() {
             ptr->light = false;
             countOp++;
 
-            Car* backPtr = ptr;
+            const Car* backPtr = ptr;
             int bSteps = dist;
             
             while (bSteps--) {
