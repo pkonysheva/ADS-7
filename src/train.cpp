@@ -36,10 +36,8 @@ int Train::getLength() {
     while (true) {
         if (temp->light) {
             temp->light = false;
-            
             int stepsBack = count;
             const Car* verify = temp;
-            
             while (stepsBack > 0) {
                 verify = verify->prev;
                 countOp++;
@@ -52,7 +50,6 @@ int Train::getLength() {
 
             countOp += count;
         }
-        
         temp = temp->next;
         count++;
         countOp++;
