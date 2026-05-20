@@ -37,7 +37,7 @@ int Train::getLength() {
 
     int totalSteps = 0;
 
-    while (true) {
+    while (totalSteps < 10000) {
         while (current->light && totalSteps < 10000) {
             current = current->next;
             totalSteps++;
@@ -61,16 +61,17 @@ int Train::getLength() {
             check->light = true;
             countOp++;
 
+            Car* verify = check;
             for (int i = 0; i < stepsBack; ++i) {
-                check = check->next;
+                verify = verify->next;
                 countOp++;
             }
 
-            if (check->light) {
+            if (verify == current) {
                 return stepsBack + 1;
             } else {
-                current = check->next;
-                totalSteps = 0;
+                current = current->next;
+                totalSteps++;
                 countOp++;
             }
         } else {
@@ -79,6 +80,8 @@ int Train::getLength() {
             countOp++;
         }
     }
+
+    return -1;
 }
 
 int Train::getOpCount() {
