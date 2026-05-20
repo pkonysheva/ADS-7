@@ -23,65 +23,44 @@ void Train::addCar(bool light) {
 }
 
 int Train::getLength() {
-    if (first->next == first) {
-        return 1;
-    }
+    if (!first) return 0;
+    if (first->next == first) return 1;
 
-    countOp = 0;
-    Car* current = first;
+    countOp = 1;
+    first->light = true;
 
-    if (current->light) {
-        current->light = false;
+    Car* ptr = first->next;
+    int dist = 1;
+    countOp++;
+
+    while(true) {
+        if (ptr->light) {
+            ptr->light = false;
+            countOp++;
+
+            Car* backPtr = ptr;
+            int bSteps = dist;
+            
+            while (bSteps--) {
+                backPtr = backPtr->prev;
+                countOp++;
+            }
+
+            if (!first->light) {
+                return dist;
+            }
+
+            int fSteps = dist;
+            while (fSteps--) {
+                backPtr = backPtr->next;
+                countOp++;
+            }
+        }
+        
+        ptr = ptr->next;
+        dist++;
         countOp++;
     }
-
-    int totalSteps = 0;
-
-    while (totalSteps < 10000) {
-        while (current->light && totalSteps < 10000) {
-            current = current->next;
-            totalSteps++;
-            countOp++;
-        }
-
-        if (totalSteps >= 10000) {
-            return -1;
-        }
-
-        Car* check = current;
-        int stepsBack = 0;
-
-        while (check->light && stepsBack < totalSteps) {
-            check = check->prev;
-            stepsBack++;
-            countOp++;
-        }
-
-        if (check == first) {
-            check->light = true;
-            countOp++;
-
-            Car* verify = check;
-            for (int i = 0; i < stepsBack; ++i) {
-                verify = verify->next;
-                countOp++;
-            }
-
-            if (verify == current) {
-                return stepsBack + 1;
-            } else {
-                current = current->next;
-                totalSteps++;
-                countOp++;
-            }
-        } else {
-            current = current->next;
-            totalSteps++;
-            countOp++;
-        }
-    }
-
-    return -1;
 }
 
 int Train::getOpCount() {
